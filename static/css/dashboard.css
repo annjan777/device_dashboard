@@ -1,0 +1,46 @@
+.badge.online {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.idle {
+    background-color: #ffc107;
+    color: white;
+}
+
+.badge.offline {
+    background-color: #dc3545;
+    color: white;
+}
+
+.device-panel {
+    cursor: pointer;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.device-panel:hover {
+    background-color: #f8f9fa;
+}
+
+.device-panel .btn {
+    margin-left: 0.5rem;
+}
+
+.logs-container {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+.log-panel {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}

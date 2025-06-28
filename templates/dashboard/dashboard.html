@@ -1,0 +1,345 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        .device-panel {
+            background-color: #34495e;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .device-panel:hover {
+            transform: translateX(5px);
+        }
+        .status-badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+        }
+        .status-online {
+            background-color: #2ecc71;
+        }
+        .status-idle {
+            background-color: #f39c12;
+        }
+        .status-offline {
+            background-color: #e74c3c;
+        }
+        .log-panel {
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .add-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .add-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <h4 class="mb-4">Devices</h4>
+                <div class="devices-list">
+                    {% for device in devices %}
+                    <div class="device-panel" data-device-id="{{ device.device_id }}" data-device-url="{% url 'device_logs' device.device_id %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5>{{ device.name }}</h5>
+                                <p class="mb-1">ID: {{ device.device_id }}</p>
+                                <p class="mb-0">Last Seen: {{ device.last_seen|date:"Y-m-d H:i:s" }}</p>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="status-badge status-{{ device.status|default:'offline' }}">
+                                    {{ device.status|default:'offline'|title }}
+                                </span>
+                                {% if device.status != 'online' %}
+                                <button class="btn btn-sm btn-outline-primary ms-2 py-0 btn-query" 
+                                        data-device-id="{{ device.device_id|escapejs }}"
+                                        data-loading-text="Querying...">
+                                    Query
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center">No devices registered yet</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="p-3">
+                    <h4>Recent Logs</h4>
+                    <div id="logs-container">
+                        {% for log in recent_logs %}
+                        <div class="log-panel">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>{{ log.device.name }}</h6>
+                                    <p class="mb-1">Time: {{ log.timestamp|date:"Y-m-d H:i:s" }}</p>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-primary" onclick="window.location.href='{% url 'device_logs' log.device.device_id %}'">
+                                        View All Logs
+                                    </button>
+                                </div>
+                            </div>
+                            <pre class="mt-2">{{ log.data|safe }}</pre>
+                        </div>
+                        {% empty %}
+                        <p class="text-center">No logs available</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="add-btn" onclick="window.location.href='{% url 'create_log' %}'">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add event listeners when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for device panels
+            document.querySelectorAll('.device-panel').forEach(panel => {
+                const url = panel.getAttribute('data-device-url');
+                if (url) {
+                    panel.addEventListener('click', () => {
+                        window.location.href = url;
+                    });
+                }
+            });
+
+            // Add click handlers for query buttons
+            document.querySelectorAll('.btn-query').forEach(button => {
+                const deviceId = button.getAttribute('data-device-id');
+                if (deviceId) {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent panel click
+                        queryDevice(deviceId, button);
+                    });
+                }
+            });
+        });
+
+        // Function to update device status
+        function updateDeviceStatus(deviceId, status) {
+            const devicePanel = document.querySelector('[data-device-id="' + deviceId + '"]');
+            if (devicePanel) {
+                const statusBadge = devicePanel.querySelector('.status-badge');
+                if (statusBadge) {
+                    // Remove all status classes
+                    statusBadge.className = statusBadge.className
+                        .split(' ')
+                        .filter(function(cls) { return cls.indexOf('status-') !== 0; })
+                        .join(' ');
+                    
+                    // Add the new status class
+                    statusBadge.classList.add('status-' + status);
+                    statusBadge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                    
+                    // Show/hide query button
+                    const queryBtn = devicePanel.querySelector('.btn-query');
+                    if (queryBtn) {
+                        queryBtn.style.display = status === 'online' ? 'none' : 'block';
+                    }
+                }
+            }
+        }
+        
+        // Function to query device status
+        function queryDevice(deviceId, button) {
+            const originalText = button.textContent;
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '';
+            
+            // Show loading state
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Querying...';
+            
+            // Send query request
+            fetch(`/api/device/${deviceId}/query/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                credentials: 'same-origin',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Show success message
+                    const toast = new bootstrap.Toast(document.getElementById('toast'));
+                    document.getElementById('toast-message').textContent = 'Query sent to device';
+                    toast.show();
+                } else {
+                    throw new Error(data.message || 'Failed to send query');
+                }
+            })
+            .catch(error => {
+                console.error('Error querying device:', error);
+                alert(`Error: ${error.message}`);
+            })
+            .finally(() => {
+                // Reset button state
+                button.disabled = false;
+                button.textContent = originalText;
+            });
+        }
+
+        // Function to add new log entry
+        function addLogEntry(deviceId, data) {
+            const logsContainer = document.getElementById('logs-container');
+            if (logsContainer) {
+                const logPanel = document.createElement('div');
+                logPanel.className = 'log-panel';
+                logPanel.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6>Device ${deviceId}</h6>
+                            <p class="mb-1">Time: ${new Date().toLocaleString()}</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary" onclick="window.location.href='/device/${deviceId}/logs/'">
+                                View All Logs
+                            </button>
+                        </div>
+                    </div>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                logsContainer.insertBefore(logPanel, logsContainer.firstChild);
+            }
+        }
+
+        // Function to update all device statuses
+        function updateAllDeviceStatuses() {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : '';
+            console.log('Fetching device statuses...');
+            
+            fetch('/api/devices/status/', {
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin',
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received device data:', data);
+                if (data.devices && data.devices.length > 0) {
+                    console.log(`Updating ${data.devices.length} devices`);
+                    data.devices.forEach(device => {
+                        console.log(`Updating device ${device.device_id} to status: ${device.status}`);
+                        updateDeviceStatus(device.device_id, device.status);
+                    });
+                } else {
+                    console.log('No devices found or empty devices array');
+                }
+            })
+            .catch(error => {
+                console.error('Error in updateAllDeviceStatuses:', error);
+                // Try to force an update of the page if we're getting auth errors
+                if (error.message.includes('401') || error.message.includes('403')) {
+                    console.log('Authentication error detected, reloading page...');
+                    window.location.reload();
+                }
+            });
+        }
+
+        // Poll for updates
+        setInterval(function() {
+            // Update device statuses
+            updateAllDeviceStatuses();
+            
+            // Update recent messages
+            fetch('/get_recent_messages/')
+                .then(response => response.json())
+                .then(data => {
+                    // Update logs
+                    if (data.messages) {
+                        data.messages.forEach(message => {
+                            addLogEntry(message.device_id, message.data);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching updates:', error));
+        }, 5000);  // Poll every 5 seconds
+        
+        // Initial update
+        updateAllDeviceStatuses();
+    </script>
+    
+    <!-- Toast for notifications -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-message">
+                Query sent to device
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

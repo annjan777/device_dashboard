@@ -1,0 +1,200 @@
+Connected with result code 0
+Performing system checks...
+
+ Connected to MQTT Broker
+✅ Connected to MQTT Broker
+System check identified no issues (0 silenced).
+June 18, 2025 - 06:30:46
+Django version 3.2.25, using settings 'device_dashboard.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{\n  "device-id": "002",\n  "message": "Hi Illa "\n}'
+✅ Decoded JSON: {'device-id': '002', 'message': 'Hi Illa '}
+🎯 Device Type: BFM
+🎯 Device ID: 002
+🎯 Message Content: Hi Illa 
+🔄 Found existing device: BFM - 002
+🔄 Existing device updated: 002
+📝 Log entry created for 002: Hi Illa 
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{\n  "device-id": "002",\n  "message": "Hi Illaa "\n}'
+✅ Decoded JSON: {'device-id': '002', 'message': 'Hi Illaa '}
+🎯 Device Type: BFM
+🎯 Device ID: 002
+🎯 Message Content: Hi Illaa 
+🔄 Found existing device: BFM - 002
+Error processing MQTT message: name 'ValidationError' is not defined
+🔄 Existing device updated: 002
+📝 Log entry created for 002: Hi Illaa 
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 002 to offline
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{\n  "device-id": "001",\n  "message": "Hi Illaa "\n}'
+✅ Decoded JSON: {'device-id': '001', 'message': 'Hi Illaa '}
+🎯 Device Type: BFM
+🎯 Device ID: 001
+🎯 Message Content: Hi Illaa 
+🔄 Found existing device: BFM - 001
+🔄 Existing device updated: 001
+📝 Log entry created for 001: Hi Illaa 
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 001 to offline
+Connected with result code 0
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+entry created for 002: Test3
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+Connected with result code 0
+Performing system checks...
+
+✅ Connected to MQTT Broker
+System check identified no issues (0 silenced).
+June 15, 2025 - 17:22:56
+Django version 3.2.25, using settings 'device_dashboard.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Connected with result code 0
+Performing system checks...
+
+ Connected to MQTT Broker
+✅ Connected to MQTT Broker
+System check identified no issues (0 silenced).
+ Set device 002 to offline
+ Set device 001 to offline
+June 15, 2025 - 17:28:31
+Django version 3.2.25, using settings 'device_dashboard.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "002", "message": "Test3"}'
+✅ Decoded JSON: {'device-id': '002', 'message': 'Test3'}
+🎯 Device Type: BFM
+🎯 Device ID: 002
+🎯 Message Content: Test3
+🔄 Found existing device: BFM - 002
+Error processing MQTT message: name 'ValidationError' is not defined
+🔄 Existing device updated: 002
+🔄 Log entry already exists for 002: Test3
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 002 to offline
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "002", "message": "Test9"}'
+✅ Decoded JSON: {'device-id': '002', 'message': 'Test9'}
+🎯 Device Type: BFM
+🎯 Device ID: 002
+🎯 Message Content: Test9
+🔄 Found existing device: BFM - 002
+🔄 Existing device updated: 002
+📝 Log entry created for 002: Test9
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 002 to offline
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "Test9", "temp": "27"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'Test9', 'temp': '27'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: Test9
+Error processing MQTT message: name 'ValidationError' is not defined
+✅ New device created: 003
+📝 Log entry created for 003: Test9
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "Test9"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'Test9'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: Test9
+🔄 Found existing device: BFM - 003
+🔄 Existing device updated: 003
+🔄 Log entry already exists for 003: Test9
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "Test9"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'Test9'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: Test9
+🔄 Found existing device: BFM - 003
+Error processing MQTT message: name 'ValidationError' is not defined
+🔄 Existing device updated: 003
+🔄 Log entry already exists for 003: Test9
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "Test"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'Test'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: Test
+🔄 Found existing device: BFM - 003
+Error processing MQTT message: name 'ValidationError' is not defined
+🔄 Existing device updated: 003
+📝 Log entry created for 003: Test
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "Test"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'Test'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: Test
+🔄 Found existing device: BFM - 003
+Error processing MQTT message: name 'ValidationError' is not defined
+🔄 Existing device updated: 003
+🔄 Log entry already exists for 003: Test
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "003", "message": "hi"}'
+✅ Decoded JSON: {'device-id': '003', 'message': 'hi'}
+🎯 Device Type: BFM
+🎯 Device ID: 003
+🎯 Message Content: hi
+🔄 Found existing device: BFM - 003
+🔄 Existing device updated: 003
+📝 Log entry created for 003: hi
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 003 to offline
+Error processing MQTT message: name 'ValidationError' is not defined
+
+📩 MQTT Message Received on topic: devices/BFM
+📦 Raw Payload: b'{"device-id": "002", "message": "Test 99"}'
+✅ Decoded JSON: {'device-id': '002', 'message': 'Test 99'}
+🎯 Device Type: BFM
+🎯 Device ID: 002
+🎯 Message Content: Test 99
+🔄 Found existing device: BFM - 002
+🔄 Existing device updated: 002
+📝 Log entry created for 002: Test 99
+🔥 Error in on_message: cannot access local variable 'recent_messages' where it is not associated with a value
+ Set device 002 to offline
+Connected with result code 0
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
+Error processing MQTT message: name 'ValidationError' is not defined
